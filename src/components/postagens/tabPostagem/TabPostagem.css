@@ -1,0 +1,11 @@
+.titulo {
+    font-weight: bold;
+}
+
+.appbar {
+    background-color: #D8D7B6 !important;
+    justify-content: left;
+    justify-items: left;
+    color: #D8D7B6;
+    width: 200px;
+}
