@@ -30,7 +30,7 @@ function CadastroUsuario() {
         })
 
     useEffect(() => {
-        if (userResult.id != 0) {
+        if (userResult.id !== 0) {
             navigate("/login")
         }
     }, [userResult])
@@ -51,18 +51,30 @@ function CadastroUsuario() {
     }
     async function onSubmit(e: ChangeEvent<HTMLFormElement>) {
         e.preventDefault()
-        if (confirmarSenha == user.senha) {
-            cadastroUsuario(`/usuarios/cadastrar`, user, setUserResult)
-            toast.success('Usuario cadastrado com sucesso', {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: false,
-                draggable: false,
-                theme: "colored",
-                progress: undefined,
-            });
+        if (confirmarSenha === user.senha && user.senha.length >= 8) {
+            try {
+                await cadastroUsuario(`/usuarios/cadastrar`, user, setUserResult)
+                toast.success('Usuario cadastrado com sucesso', {
+                    position: "top-right",
+                    autoClose: 4000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            } catch (error) {
+                console.log(`Error: ${error}`)
+                toast.error('Erro ao cadastrar o Usuário', {
+                    position: "top-right",
+                    autoClose: 4000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
         } else {
             toast.error('Dados inconsistentes. Favor verificar as informações de cadastro.', {
                 position: "top-right",
@@ -74,6 +86,8 @@ function CadastroUsuario() {
                 theme: "colored",
                 progress: undefined,
             });
+            setUser({ ...user, senha: "" })
+            setConfirmarSenha("")
         }
     }
     return (
